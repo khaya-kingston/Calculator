@@ -30,32 +30,41 @@
 
                 <div id="lil-controls">
 
-                    <div id="core">
-
-                        <button class="op-arg" id="open">(</button>
-                        <button class="op-arg" id="close">)</button>
-                        <button class="op-arg" id="exp">x<sup>y</sup></button>
-                        <button class="op-arg" id="fact">!</button>
-                        <button class="num-arg">7</button>
-                        <button class="num-arg">8</button>
-                        <button class="num-arg">9</button>
-                        <button class="op-arg" id="/">&divide;</button>
-                        <button class="num-arg">4</button>
-                        <button class="num-arg">5</button>
-                        <button class="num-arg">6</button>
-                        <button class="op-arg" id="*">&times;</button>
-                        <button class="num-arg">1</button>
-                        <button class="num-arg">2</button>
-                        <button class="num-arg">3</button>
-                        <button class="op-arg" id="-">&minus;</button>
-                        <button class="num-arg">0</button>
+                        <div class="row">
+                            <button class="num-arg" id="negate">&plusmn;</button>
+                            <button class="op-arg" id="sqrt">&Sqrt;</button>
+                            <button class="op-arg" id="exp">x<sup>y</sup></button>
+                            <button class="op-arg" id="fact">!</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="num-arg">7</button>
+                            <button class="num-arg">8</button>
+                            <button class="num-arg">9</button>
+                            <button class="op-arg" id="/">&divide;</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="num-arg">4</button>
+                            <button class="num-arg">5</button>
+                            <button class="num-arg">6</button>
+                            <button class="op-arg" id="*">&times;</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="num-arg">1</button>
+                            <button class="num-arg">2</button>
+                            <button class="num-arg">3</button>
+                            <button class="op-arg" id="-">&minus;</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="num-arg">0</button>
                         <button class="num-arg" id="point">.</button>
-                        <button class="num-arg" id="equals">=</button>
+                        <button class="op-arg" id="equals">=</button>
                         <button class="op-arg" id="+">&plus;</button>
-
-
-
-                    </div>
+                        </div>
+                        
 
                 </div>
 
@@ -64,5 +73,8 @@
 
 
         </div>
+
+        <script src="backend.js"></script>
+
     </body>
 </html>
