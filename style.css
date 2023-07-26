@@ -33,6 +33,7 @@ body {
     padding: 15px;
 
     display: flex;
+    flex-direction: column;
     justify-content: end;
     align-items: end;
     gap: 5px;

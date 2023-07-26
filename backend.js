@@ -1,20 +1,22 @@
 // Basic operate function
 function operate(op, num1, num2) {
 
+    console.log('operator Called');
+
     switch (op) {
         case '+':
             return String(Number(num1)+Number(num2));
             break;
 
-        case '-':
+        case '−':
             return String(Number(num1)-Number(num2));
             break;
 
-        case '*':
+        case '×':
             return String(Number(num1)*Number(num2));
             break;
         
-        case '/':
+        case '÷':
             return String(Number(num1)/Number(num2));
             break;
 
@@ -34,11 +36,12 @@ const upper = screen.querySelector('#work-holder')
 const disp = screen.querySelector('#result-display');
 
 // Operation List
-const ops = ['+', '-', '*', '/', 'exp', 'sqrt', '!'];
+const ops = ['+', '-', '*', '/', 'exp', 'sqrt', 'fact'];
 
 
 // Calculator Stack
-const calc = [];
+let calc = ['0'];
+disp.textContent = calc[calc.length - 1];
 
 
 // Errors
@@ -52,87 +55,104 @@ const errors = {
 // Boolean for checking decimal nature
 let isDec = false;
 
-
-// Simplifies calc stack 
 function simplify() {
-    if (calc.length == 3) {
-        const num1 = calc.shift();
-        const op = calc.shift();
-        const num2 = calc.shift();
-        calc.unshift(operate(op, num1, num2));
-    }
-}
-
-// Clear everything
-function clear() {
-    calc = [];
-    upper.textContent = '';
-    disp.textContent = '';
-}
-
-// Functions concerning pressing a num button
-
-
-// Function for when the calculator is empty
-function starter(e) {
-
-    switch (e.id) {
-        case 'point': 
-            disp.textContent = '0.';
-            isDec = true;
-            calc.push(disp.textContent);
-            break;
-            
-        case 'negate':
-            disp.textContent = errors.negError;
-            break;
-
-        default:
-            calc.push(e.textContent);
-            disp = calc[-1];
-    }
-}
-
-console.log(Number('.'));
-
-// Function for adding points
-function pointer() {
-    isDec ? () => {
-        clear();
-        disp.textContent = errors.ptError;
-    } : () => {
-        isDec = true;
-        calc[-1] += '.';
-        disp.textContent = calc[-1];
-    };
-}
-
-// Function for concatenating numbers
-function numFiller(e) {
-    if (e.id === 'point') {
-        if (calc[-1] in ops) {
-            calc.push('0');
-        } 
-        pointer();
+    console.log('simplify Called');
+    if (calc.length === 1) {
+        return;
     } else {
-        if (calc[-1] in ops) {
-            calc.push(e.textContent);
-            upper = calc.join('');
-            disp = calc[-1];
-        } else {
-            if (e.id === 'negate') {
-                calc[-1] = '-'+calc[-1];
-                disp = calc[-1];
-            } else {
-                calc[-1] += e.textContent;
-                disp = calc[-1];
-            }
+        num2 = calc.pop();
+        op = calc.pop();
+        num1 = calc.pop();
+        calc.push(operate(op, num1, num2));
+    }
+}
+
+function numFiller(e) {
+    console.log('numFiller Called');
+    if (e.target.id != 'negate') {
+        isNaN(Number(calc[calc.length - 1])) ? calc.push(e.target.textContent) : 
+        calc[calc.length - 1] += e.target.textContent;
+    } else {
+        if (!(isNaN(Number(calc[calc.length - 1])))) {
+            calc[calc.length-1] = String(Number(calc[calc.length-1]) * -1);
         }
     }
+    disp.textContent = calc[calc.length - 1];
+    upper.textContent = calc.join(' ');
 }
-
-
 
 function numRunner(e) {
-    calc.length == 0 ? starter(e) : numFiller(e);
+    console.log('numRunner Called');
+    calc[0] === '0' && upper.textContent === '' ? (() => {
+    if (e.target.id != 'negate') {
+        calc[0] = e.target.textContent; 
+        disp.textContent = calc[0];
+        upper.textContent = calc.join(' ');
+    }
+    })() : numFiller(e);
 }
+
+function opRunner(e) {
+    console.log('opRunner Called');
+    if (e.target.id === 'equals') {
+        if (isNaN(Number(calc[calc.length - 1]))) {
+            let popper = calc.pop();
+        }
+        upper.textContent = calc.join(' ');
+        upper.textContent += ' =';
+        simplify();
+        disp.textContent = calc[0];
+    }
+    else {
+        isNaN(Number(calc[calc.length - 1])) ? (() => {
+            calc[calc.length - 1] = e.target.textContent;
+        })() : (() => {
+            simplify();
+            calc.push(e.target.textContent);
+            disp.textContent = calc[0];
+        })();
+        upper.textContent = calc.join(' ');
+    }
+}
+
+function powRunner(e) {
+    
+    if (e.target.textContent === 'AC') {
+        disp.textContent = '0';
+        upper.textContent = '';
+        calc = ['0'];
+    } else {
+        if (disp.textContent != 0) {
+            let popper = calc.pop();
+            if (popper.length === 1) {
+                disp.textContent = '0';
+            } else {
+                disp.textContent = popper.slice(0, popper.length-1);
+                calc.push(popper.slice(0, popper.length-1));
+            }
+        upper.textContent = calc.join(' ');
+        } 
+    }
+
+}
+
+
+function buttonPress(e) {
+    console.log('Button Pressed');
+    e.target.classList[0] === "del-clear" ? powRunner(e) : (() => {
+        e.target.classList[0] === "num-arg" ? numRunner(e) : opRunner(e);
+    })()
+}
+
+const buttons = document.getElementsByTagName('button');
+
+buttonsArr = [...buttons]
+
+buttonsArr.forEach(button => {
+    button.addEventListener('click', buttonPress);
+});
+
+console.log(calc);
+console.log(disp);
+console.log(upper);
+console.log(isDec);
